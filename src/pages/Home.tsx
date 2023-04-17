@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import ArticlePreview from '../components/ArticlePreview'
 import TagsList from '../components/TagsList'
 import { UserContext } from '../services/contexts/UserContextProvider'
@@ -9,22 +9,24 @@ import Pagination from '../components/Pagination'
 
 function Home() {
   const { isLogged } = useContext(UserContext)
+  const [selectedTag, setSelectedTag] = useState('')
+  const [isFeed, setIsFeed] = useState(isLogged)
+
   const {
     articles,
-    isLoading,
-    isFeed,
-    setIsFeed,
-    isGlobal,
-    setIsGlobal,
-    isTag,
-    setIsTag,
-    selectedTag,
-    setSelectedTag,
+    isLoading: isArticleLoading,
     page,
     setPage,
     totalPage,
-  } = useArticles({ isLogged })
+  } = useArticles({ isFeed, tag: selectedTag })
   const { tags, isLoading: isLoadingTags } = useTags()
+
+  useEffect(() => {
+    if (selectedTag) {
+      setIsFeed(false)
+      setPage(1)
+    }
+  }, [selectedTag])
 
   return (
     <div className='home-page'>
@@ -47,9 +49,7 @@ function Home() {
                       className={classNames('nav-link', { active: isFeed })}
                       onClick={(e) => {
                         e.preventDefault()
-                        setIsGlobal(false)
                         setIsFeed(true)
-                        setIsTag(false)
                         setPage(1)
                         setSelectedTag('')
                       }}
@@ -62,12 +62,10 @@ function Home() {
                 <li className='nav-item'>
                   <a
                     href=''
-                    className={classNames('nav-link', { active: isGlobal })}
+                    className={classNames('nav-link', { active: !isFeed && !selectedTag })}
                     onClick={(e) => {
                       e.preventDefault()
-                      setIsGlobal(true)
                       setIsFeed(false)
-                      setIsTag(false)
                       setPage(1)
                       setSelectedTag('')
                     }}
@@ -75,11 +73,11 @@ function Home() {
                     Global Feed
                   </a>
                 </li>
-                {isTag && (
+                {selectedTag && (
                   <li className='nav-item'>
                     <a
                       href=''
-                      className={classNames('nav-link', { active: isTag })}
+                      className={classNames('nav-link', { active: selectedTag })}
                       onClick={(e) => {
                         e.preventDefault()
                       }}
@@ -90,7 +88,7 @@ function Home() {
                 )}
               </ul>
             </div>
-            {isLoading && <div className='article-preview'>Loading Articles...</div>}
+            {isArticleLoading && <div className='article-preview'>Loading Articles...</div>}
             {articles &&
               articles.map((article) => (
                 <ArticlePreview

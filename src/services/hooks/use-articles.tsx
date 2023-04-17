@@ -1,60 +1,40 @@
 import { useQuery } from '@tanstack/react-query'
 import { getArticles } from '../api/articles'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { DEFAULT_LIMIT } from '../../constants/api.constants'
 
 type UseArticlesProps = {
   favorited?: string
   author?: string
-  isLogged?: boolean
+  isFeed?: boolean
+  tag?: string
 }
-function useArticles({ favorited, author, isLogged }: UseArticlesProps) {
-  const [selectedTag, setSelectedTag] = useState('')
-  const [isFeed, setIsFeed] = useState(isLogged)
-  const [isGlobal, setIsGlobal] = useState(!isLogged)
-  const [isTag, setIsTag] = useState(false)
-
+function useArticles({ favorited, author, isFeed, tag }: UseArticlesProps) {
   const [page, setPage] = useState(1)
   const offset = (page - 1) * DEFAULT_LIMIT
 
   const articlesQuery = useQuery({
-    queryKey: ['articles', { feed: isFeed, tag: selectedTag, author, favorited, offset }],
+    queryKey: ['articles', { feed: isFeed, tag, author, favorited, offset }],
     queryFn: async () =>
       await getArticles({
         feed: isFeed,
-        tag: selectedTag,
+        tag,
         author,
         favorited,
         offset,
       }),
+    retry: 0,
   })
 
   const totalPage = articlesQuery.data?.articlesCount
     ? Math.ceil(articlesQuery.data.articlesCount / DEFAULT_LIMIT)
     : 0
 
-  useEffect(() => {
-    if (selectedTag) {
-      setIsFeed(false)
-      setIsGlobal(false)
-      setIsTag(true)
-      setPage(1)
-    }
-  }, [selectedTag])
-
   return {
     articles: articlesQuery?.data?.articles,
     isLoading: articlesQuery?.isLoading,
     isSuccess: articlesQuery?.isSuccess,
     articlesCount: articlesQuery?.data?.articlesCount,
-    isFeed,
-    setIsFeed,
-    isGlobal,
-    setIsGlobal,
-    isTag,
-    setIsTag,
-    selectedTag,
-    setSelectedTag,
     page,
     setPage,
     totalPage,

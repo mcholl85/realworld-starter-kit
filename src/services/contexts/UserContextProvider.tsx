@@ -11,9 +11,9 @@ type UserContextProps = {
   user: IUser
   errors: string[]
   isLogged: boolean
-  setLogin: (params: LoginParams) => void
-  setRegister: (params: RegisterParams) => void
-  updateUser: (params: UpdateParams) => void
+  setLogin: (params: LoginParams) => Promise<void>
+  setRegister: (params: RegisterParams) => Promise<void>
+  updateUser: (params: UpdateParams) => Promise<void>
   setLogout: () => void
 }
 
