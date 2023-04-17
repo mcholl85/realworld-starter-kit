@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { parseErrors } from '../../utils/parseErrors'
 import { postArticle, getArticle, putArticle, deleteArticle } from '../api/articles'
 import { articleResponse } from '../api/articles/index.type'
+import { QUERY_ARTICLES_KEY, QUERY_ARTICLE_KEY } from '../../constants/query.constants'
 
 export type Article = {
   slug: string
@@ -48,7 +49,7 @@ function useArticle({ fetched, slug }: UseArticleProps) {
     },
   }
   const { data: article } = useQuery({
-    queryKey: ['article', slug],
+    queryKey: [QUERY_ARTICLE_KEY, slug],
     queryFn: async () => await getArticle(slug),
     retry: 0,
     enabled: fetched,
@@ -58,8 +59,8 @@ function useArticle({ fetched, slug }: UseArticleProps) {
   const { mutate: createArticle, isError: isCreateArticleError } = useMutation({
     mutationFn: postArticle,
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['article', data.slug])
-      queryClient.invalidateQueries(['articles'])
+      queryClient.invalidateQueries([QUERY_ARTICLE_KEY, data.slug])
+      queryClient.invalidateQueries([QUERY_ARTICLES_KEY])
       navigate(`/article/${data.slug}`)
     },
     onError: (error: AxiosError<articleResponse>) => {
@@ -71,8 +72,8 @@ function useArticle({ fetched, slug }: UseArticleProps) {
   const { mutate: updateArticle } = useMutation({
     mutationFn: putArticle,
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['article'])
-      queryClient.invalidateQueries(['articles'])
+      queryClient.invalidateQueries([QUERY_ARTICLE_KEY])
+      queryClient.invalidateQueries([QUERY_ARTICLES_KEY])
       navigate(`/article/${data.slug}`)
     },
   })
@@ -80,8 +81,8 @@ function useArticle({ fetched, slug }: UseArticleProps) {
   const { mutate: removeArticle } = useMutation({
     mutationFn: deleteArticle,
     onSuccess: () => {
-      queryClient.invalidateQueries(['article'])
-      queryClient.invalidateQueries(['articles'])
+      queryClient.invalidateQueries([QUERY_ARTICLE_KEY])
+      queryClient.invalidateQueries([QUERY_ARTICLES_KEY])
       navigate('/')
     },
   })
