@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { parseErrors } from '../../utils/parseErrors'
 import { postLogin, postRegister, putUser } from '../api/users'
-import { User } from '../api/users/index.type'
+import { User } from '../api/users/index.types'
 import useLocalStorage from '../hooks/use-localstorage'
 
 type UserContextProviderProps = PropsWithChildren

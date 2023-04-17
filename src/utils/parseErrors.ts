@@ -1,4 +1,4 @@
-import { User } from '../services/api/users/index.type'
+import { User } from '../services/api/users/index.types'
 
 export type Errors = {
   [Property in keyof User]?: Array<string>

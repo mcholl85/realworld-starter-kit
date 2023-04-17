@@ -1,5 +1,5 @@
 import api from '..'
-import { LoginInputs, RegisterInputs, UpdateInputs, UserResponse } from './index.type'
+import { LoginInputs, RegisterInputs, UpdateInputs, UserResponse } from './index.types'
 
 export const postLogin = async ({ email, password }: LoginInputs): Promise<UserResponse> => {
   return (await api.post('/users/login', { user: { email, password } })).data

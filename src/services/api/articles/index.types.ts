@@ -1,6 +1,6 @@
 import { FormValues } from '../../../pages/EditArticle'
 import { Errors } from '../../../utils/parseErrors'
-import { Article } from '../../hooks/use-article'
+import { IArticle } from '../../../interfaces'
 
 export type getArticlesInputs = {
   tag?: string
@@ -22,11 +22,11 @@ export type deleteArticleInputs = {
 }
 
 export type articlesResponse = {
-  articles: Array<Article>
+  articles: Array<IArticle>
   articlesCount: number
 }
 
 export type articleResponse = {
-  article?: Article
+  article?: IArticle
   errors?: Errors
 }

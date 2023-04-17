@@ -3,10 +3,10 @@ import {
   getArticlesInputs,
   articlesResponse,
   updateArticleInputs,
-} from './index.type'
+} from './index.types'
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../constants'
-import { Article } from '../../hooks/use-article'
 import api from '..'
+import { IArticle } from '../../../interfaces'
 
 export const getArticles = async ({
   limit = DEFAULT_LIMIT,
@@ -25,37 +25,37 @@ export const getArticles = async ({
   ).data
 }
 
-export const getArticle = async (slug?: string): Promise<Article> => {
+export const getArticle = async (slug?: string): Promise<IArticle> => {
   return await (
     await api.get(`/articles/${slug}`)
   ).data.article
 }
 
-export const postArticle = async ({ form }: postArticleInputs): Promise<Article> => {
+export const postArticle = async ({ form }: postArticleInputs): Promise<IArticle> => {
   return await (
     await api.post('/articles', { article: form })
   ).data.article
 }
 
-export const putArticle = async ({ form, slug }: updateArticleInputs): Promise<Article> => {
+export const putArticle = async ({ form, slug }: updateArticleInputs): Promise<IArticle> => {
   return await (
     await api.put(`/articles/${slug}`, { article: form })
   ).data.article
 }
 
-export const deleteArticle = async (slug: string): Promise<Article> => {
+export const deleteArticle = async (slug: string): Promise<IArticle> => {
   return await (
     await api.delete(`/articles/${slug}`)
   ).data.article
 }
 
-export const postFavorite = async (slug: string): Promise<Article> => {
+export const postFavorite = async (slug: string): Promise<IArticle> => {
   return await (
     await api.post(`/articles/${slug}/favorite`)
   ).data.article
 }
 
-export const deleteFavorite = async (slug: string): Promise<Article> => {
+export const deleteFavorite = async (slug: string): Promise<IArticle> => {
   return await (
     await api.delete(`/articles/${slug}/favorite`)
   ).data.article

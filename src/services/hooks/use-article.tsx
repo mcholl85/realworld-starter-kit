@@ -4,25 +4,9 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { parseErrors } from '../../utils/parseErrors'
 import { postArticle, getArticle, putArticle, deleteArticle } from '../api/articles'
-import { articleResponse } from '../api/articles/index.type'
+import { articleResponse } from '../api/articles/index.types'
 import { QUERY_ARTICLES_KEY, QUERY_ARTICLE_KEY } from '../../constants/query.constants'
-
-export type Article = {
-  slug: string
-  title: string
-  description: string
-  body: string
-  updatedAt: Date
-  favorited: boolean
-  favoritesCount: number
-  tagList: Array<string>
-  author: {
-    username: string
-    bio: string
-    image: string
-    following: boolean
-  }
-}
+import { IArticle } from '../../interfaces'
 
 type UseArticleProps = {
   fetched: boolean
@@ -32,7 +16,7 @@ type UseArticleProps = {
 function useArticle({ fetched, slug }: UseArticleProps) {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const defaultArticle: Article = {
+  const defaultArticle: IArticle = {
     slug: '',
     title: '',
     description: '',
