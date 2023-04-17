@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getProfile } from '../api/profiles'
 import { useNavigate } from 'react-router-dom'
 
-type useProfileProps = {
+type UseProfileProps = {
   username: string
 }
 
@@ -13,7 +13,7 @@ export type Profile = {
   following: boolean
 }
 
-function useProfile({ username }: useProfileProps) {
+function useProfile({ username }: UseProfileProps) {
   const navigate = useNavigate()
   const profileQuery = useQuery({
     queryKey: ['profile', username],

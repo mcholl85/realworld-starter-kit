@@ -3,12 +3,12 @@ import { getArticles } from '../api/articles'
 import { useEffect, useState } from 'react'
 import { DEFAULT_LIMIT } from '../api/constants'
 
-type useArticlesProps = {
+type UseArticlesProps = {
   favorited?: string
   author?: string
   isLogged?: boolean
 }
-function useArticles({ favorited, author, isLogged }: useArticlesProps) {
+function useArticles({ favorited, author, isLogged }: UseArticlesProps) {
   const [selectedTag, setSelectedTag] = useState('')
   const [isFeed, setIsFeed] = useState(isLogged)
   const [isGlobal, setIsGlobal] = useState(!isLogged)

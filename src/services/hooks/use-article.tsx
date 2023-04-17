@@ -23,12 +23,12 @@ export type Article = {
   }
 }
 
-type useArticleProps = {
+type UseArticleProps = {
   fetched: boolean
   slug?: string
 }
 
-function useArticle({ fetched, slug }: useArticleProps) {
+function useArticle({ fetched, slug }: UseArticleProps) {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const defaultArticle: Article = {

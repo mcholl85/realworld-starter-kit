@@ -1,11 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { deleteComment, getComments, postComment } from '../api/comments'
 
-type useCommentsProps = {
+type UseCommentsProps = {
   slug: string
 }
 
-function useComments({ slug }: useCommentsProps) {
+function useComments({ slug }: UseCommentsProps) {
   const queryClient = useQueryClient()
   const { data, isLoading } = useQuery({
     queryKey: ['comments', slug],
