@@ -2,29 +2,26 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { parseErrors } from '../../utils/parseErrors'
 import { postLogin, postRegister, putUser } from '../api/users'
-import { User } from '../api/users/index.types'
+import { IUser } from '../../interfaces'
 import useLocalStorage from './use-localstorage'
-
-export type updateUser = {
-  data: User & { password: string }
-}
+import { LoginParams, RegisterParams, UpdateParams } from '../api/users/index.types'
 
 function useAuth() {
-  const initialUser: User = {
+  const initialUser: IUser = {
     email: '',
     token: '',
     username: '',
     bio: '',
     image: '',
   }
-  const [user, setUser] = useLocalStorage<User>('user', initialUser)
-  const [errors, setErrors] = useState([] as Array<string>)
+  const [user, setUser] = useLocalStorage<IUser>('user', initialUser)
+  const [errors, setErrors] = useState<string[]>([])
   const navigate = useNavigate()
 
   const isLogged = user.token !== ''
 
-  const setLogin = async (data: { email: string; password: string }) => {
-    const { errors, user } = await postLogin(data)
+  const setLogin = async (params: LoginParams) => {
+    const { errors, user } = await postLogin(params)
 
     if (user) {
       setUser(user)
@@ -34,8 +31,8 @@ function useAuth() {
     if (errors) setErrors(parseErrors(errors))
   }
 
-  const setRegister = async (data: { email: string; username: string; password: string }) => {
-    const { errors, user } = await postRegister(data)
+  const setRegister = async (params: RegisterParams) => {
+    const { errors, user } = await postRegister(params)
 
     if (user) {
       setUser(user)
@@ -45,8 +42,8 @@ function useAuth() {
     if (errors) setErrors(parseErrors(errors))
   }
 
-  const updateUser = async ({ data }: updateUser) => {
-    const { user } = await putUser(data)
+  const updateUser = async (params: UpdateParams) => {
+    const { user } = await putUser(params)
 
     if (user) {
       setUser(user)
