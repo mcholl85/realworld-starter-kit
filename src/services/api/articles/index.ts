@@ -1,7 +1,13 @@
-import { postArticleParams, getArticlesParams, updateArticleParams } from './index.types'
+import {
+  postArticleParams,
+  getArticlesParams,
+  updateArticleParams,
+  postCommentParams,
+  deleteCommentParams,
+} from './index.types'
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../constants'
 import api from '..'
-import { IArticle, IArticlesResponse } from '../../../interfaces'
+import { IArticle, IArticlesResponse, IComment } from '../../../interfaces'
 
 export const getArticles = async ({
   limit = DEFAULT_LIMIT,
@@ -43,7 +49,6 @@ export const deleteArticle = async (slug: string): Promise<IArticle> => {
     await api.delete(`/articles/${slug}`)
   ).data.article
 }
-
 export const postFavorite = async (slug: string): Promise<IArticle> => {
   return await (
     await api.post(`/articles/${slug}/favorite`)
@@ -54,4 +59,20 @@ export const deleteFavorite = async (slug: string): Promise<IArticle> => {
   return await (
     await api.delete(`/articles/${slug}/favorite`)
   ).data.article
+}
+
+export const getComments = async (slug: string): Promise<IComment[]> => {
+  return await (
+    await api.get(`/articles/${slug}/comments`)
+  ).data.comments
+}
+
+export const postComment = async ({ slug, form }: postCommentParams): Promise<IComment> => {
+  return await (
+    await api.post(`/articles/${slug}/comments`, { comment: form })
+  ).data.comment
+}
+
+export const deleteComment = async ({ slug, id }: deleteCommentParams) => {
+  await api.delete(`/articles/${slug}/comments/${id}`)
 }

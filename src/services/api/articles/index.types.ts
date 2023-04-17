@@ -18,3 +18,15 @@ export type updateArticleParams = postArticleParams & { slug?: string }
 export type deleteArticleParams = {
   slug: string
 }
+
+export type postCommentParams = {
+  slug: string
+  form: {
+    body: string
+  }
+}
+
+export type deleteCommentParams = {
+  slug: string
+  id: number
+}

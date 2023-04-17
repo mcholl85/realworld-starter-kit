@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { deleteComment, getComments, postComment } from '../api/comments'
+import { deleteComment, getComments, postComment } from '../api/articles'
 
 type UseCommentsProps = {
   slug: string
