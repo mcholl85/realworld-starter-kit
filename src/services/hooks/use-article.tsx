@@ -4,9 +4,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { parseErrors } from '../../utils/parseErrors'
 import { postArticle, getArticle, putArticle, deleteArticle } from '../api/articles'
-import { articleResponse } from '../api/articles/index.types'
 import { QUERY_ARTICLES_KEY, QUERY_ARTICLE_KEY } from '../../constants/query.constants'
-import { IArticle } from '../../interfaces'
+import { IArticle, IArticlesResponse } from '../../interfaces'
 
 type UseArticleProps = {
   fetched: boolean
@@ -47,7 +46,7 @@ function useArticle({ fetched, slug }: UseArticleProps) {
       queryClient.invalidateQueries([QUERY_ARTICLES_KEY])
       navigate(`/article/${data.slug}`)
     },
-    onError: (error: AxiosError<articleResponse>) => {
+    onError: (error: AxiosError<IArticlesResponse>) => {
       const data = error.response?.data
       if (data?.errors) setErrors(parseErrors(data.errors))
     },

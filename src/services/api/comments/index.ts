@@ -1,6 +1,6 @@
 import api from '..'
 import { IComment } from '../../../interfaces'
-import { deleteCommentInputs, postCommentInputs } from './index.types'
+import { deleteCommentParams, postCommentParams } from './index.types'
 
 export const getComments = async (slug: string): Promise<IComment[]> => {
   return await (
@@ -8,12 +8,12 @@ export const getComments = async (slug: string): Promise<IComment[]> => {
   ).data.comments
 }
 
-export const postComment = async ({ slug, form }: postCommentInputs): Promise<IComment> => {
+export const postComment = async ({ slug, form }: postCommentParams): Promise<IComment> => {
   return await (
     await api.post(`/articles/${slug}/comments`, { comment: form })
   ).data.comment
 }
 
-export const deleteComment = async ({ slug, id }: deleteCommentInputs) => {
+export const deleteComment = async ({ slug, id }: deleteCommentParams) => {
   await api.delete(`/articles/${slug}/comments/${id}`)
 }

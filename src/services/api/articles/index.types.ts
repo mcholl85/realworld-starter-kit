@@ -1,8 +1,6 @@
 import { FormValues } from '../../../pages/EditArticle'
-import { Errors } from '../../../utils/parseErrors'
-import { IArticle } from '../../../interfaces'
 
-export type getArticlesInputs = {
+export type getArticlesParams = {
   tag?: string
   author?: string
   favorited?: string
@@ -11,22 +9,12 @@ export type getArticlesInputs = {
   feed?: boolean
 }
 
-export type postArticleInputs = {
+export type postArticleParams = {
   form: FormValues
 }
 
-export type updateArticleInputs = postArticleInputs & { slug?: string }
+export type updateArticleParams = postArticleParams & { slug?: string }
 
-export type deleteArticleInputs = {
+export type deleteArticleParams = {
   slug: string
-}
-
-export type articlesResponse = {
-  articles: Array<IArticle>
-  articlesCount: number
-}
-
-export type articleResponse = {
-  article?: IArticle
-  errors?: Errors
 }

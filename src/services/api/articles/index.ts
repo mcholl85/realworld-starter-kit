@@ -1,12 +1,7 @@
-import {
-  postArticleInputs,
-  getArticlesInputs,
-  articlesResponse,
-  updateArticleInputs,
-} from './index.types'
+import { postArticleParams, getArticlesParams, updateArticleParams } from './index.types'
 import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../constants'
 import api from '..'
-import { IArticle } from '../../../interfaces'
+import { IArticle, IArticlesResponse } from '../../../interfaces'
 
 export const getArticles = async ({
   limit = DEFAULT_LIMIT,
@@ -15,7 +10,7 @@ export const getArticles = async ({
   tag,
   author,
   favorited,
-}: getArticlesInputs): Promise<articlesResponse> => {
+}: getArticlesParams): Promise<IArticlesResponse> => {
   return await (
     await api.get(
       `/articles${feed ? '/feed' : ''}?${tag ? `tag=${tag}&` : ''}${
@@ -31,13 +26,13 @@ export const getArticle = async (slug?: string): Promise<IArticle> => {
   ).data.article
 }
 
-export const postArticle = async ({ form }: postArticleInputs): Promise<IArticle> => {
+export const postArticle = async ({ form }: postArticleParams): Promise<IArticle> => {
   return await (
     await api.post('/articles', { article: form })
   ).data.article
 }
 
-export const putArticle = async ({ form, slug }: updateArticleInputs): Promise<IArticle> => {
+export const putArticle = async ({ form, slug }: updateArticleParams): Promise<IArticle> => {
   return await (
     await api.put(`/articles/${slug}`, { article: form })
   ).data.article
