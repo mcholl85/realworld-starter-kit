@@ -1,22 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
 import { getProfile } from '../api/profiles'
 import { useNavigate } from 'react-router-dom'
+import { QUERY_PROFILE_KEY } from '../../constants/query.constants'
 
 type UseProfileProps = {
   username: string
 }
 
-export type Profile = {
-  username: string
-  bio: string
-  image: string
-  following: boolean
-}
-
 function useProfile({ username }: UseProfileProps) {
   const navigate = useNavigate()
   const profileQuery = useQuery({
-    queryKey: ['profile', username],
+    queryKey: [QUERY_PROFILE_KEY, username],
     queryFn: async () => await getProfile(username),
     retry: 0,
     onError: () => navigate('/'),

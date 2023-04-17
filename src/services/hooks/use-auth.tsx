@@ -5,6 +5,7 @@ import { postLogin, postRegister, putUser } from '../api/users'
 import { IUser } from '../../interfaces'
 import useLocalStorage from './use-localstorage'
 import { LoginParams, RegisterParams, UpdateParams } from '../api/users/index.types'
+import { USER_KEY } from '../../constants/api.constants'
 
 function useAuth() {
   const initialUser: IUser = {
@@ -14,7 +15,7 @@ function useAuth() {
     bio: '',
     image: '',
   }
-  const [user, setUser] = useLocalStorage<IUser>('user', initialUser)
+  const [user, setUser] = useLocalStorage<IUser>(USER_KEY, initialUser)
   const [errors, setErrors] = useState<string[]>([])
   const navigate = useNavigate()
 
