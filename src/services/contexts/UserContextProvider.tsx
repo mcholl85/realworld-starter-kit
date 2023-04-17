@@ -2,27 +2,22 @@ import { createContext, PropsWithChildren, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { parseErrors } from '../../utils/parseErrors'
 import { postLogin, postRegister, putUser } from '../api/users'
-import { User } from '../api/users/index.types'
 import useLocalStorage from '../hooks/use-localstorage'
+import { IUser } from '../../interfaces'
+import { LoginParams, RegisterParams, UpdateParams } from '../api/users/index.types'
+import { USER_KEY } from '../../constants/api.constants'
 
-type UserContextProviderProps = PropsWithChildren
 type UserContextProps = {
-  user: User
+  user: IUser
   errors: string[]
   isLogged: boolean
-  setLogin: (data: { email: string; password: string }) => void
-  setRegister: (data: { email: string; username: string; password: string }) => void
-  updateUser: (data: {
-    email: string
-    username: string
-    bio: string
-    password: string
-    image: string
-  }) => void
+  setLogin: (params: LoginParams) => void
+  setRegister: (params: RegisterParams) => void
+  updateUser: (params: UpdateParams) => void
   setLogout: () => void
 }
 
-const initialUser: User = {
+const initialUser: IUser = {
   email: '',
   token: '',
   username: '',
@@ -32,15 +27,15 @@ const initialUser: User = {
 
 const UserContext = createContext({} as UserContextProps)
 
-const UserContextProvider = ({ children }: UserContextProviderProps) => {
+const UserContextProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate()
-  const [errors, setErrors] = useState([] as Array<string>)
-  const [user, setUser] = useLocalStorage<User>('user', initialUser)
+  const [errors, setErrors] = useState<string[]>([])
+  const [user, setUser] = useLocalStorage<IUser>(USER_KEY, initialUser)
 
   const isLogged = user.token !== ''
 
-  const setLogin = async (data: { email: string; password: string }) => {
-    const { errors, user } = await postLogin(data)
+  const setLogin = async (params: LoginParams) => {
+    const { errors, user } = await postLogin(params)
 
     if (user) {
       setUser(user)
@@ -51,8 +46,8 @@ const UserContextProvider = ({ children }: UserContextProviderProps) => {
     if (errors) setErrors(parseErrors(errors))
   }
 
-  const setRegister = async (data: { email: string; username: string; password: string }) => {
-    const { errors, user } = await postRegister(data)
+  const setRegister = async (params: RegisterParams) => {
+    const { errors, user } = await postRegister(params)
 
     if (user) {
       setUser(user)
@@ -63,14 +58,8 @@ const UserContextProvider = ({ children }: UserContextProviderProps) => {
     if (errors) setErrors(parseErrors(errors))
   }
 
-  const updateUser = async (data: {
-    email: string
-    username: string
-    bio: string
-    password: string
-    image: string
-  }) => {
-    const { user } = await putUser(data)
+  const updateUser = async (params: UpdateParams) => {
+    const { user } = await putUser(params)
 
     if (user) {
       setUser(user)
