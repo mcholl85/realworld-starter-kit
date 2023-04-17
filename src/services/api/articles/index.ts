@@ -5,9 +5,9 @@ import {
   postCommentParams,
   deleteCommentParams,
 } from './index.types'
-import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../constants'
 import api from '..'
 import { IArticle, IArticlesResponse, IComment } from '../../../interfaces'
+import { DEFAULT_LIMIT, DEFAULT_OFFSET } from '../../../constants/api.constants'
 
 export const getArticles = async ({
   limit = DEFAULT_LIMIT,

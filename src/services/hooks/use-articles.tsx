@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getArticles } from '../api/articles'
 import { useEffect, useState } from 'react'
-import { DEFAULT_LIMIT } from '../api/constants'
+import { DEFAULT_LIMIT } from '../../constants/api.constants'
 
 type UseArticlesProps = {
   favorited?: string
@@ -29,7 +29,7 @@ function useArticles({ favorited, author, isLogged }: UseArticlesProps) {
       }),
   })
 
-  const totalPage = articlesQuery.data
+  const totalPage = articlesQuery.data?.articlesCount
     ? Math.ceil(articlesQuery.data.articlesCount / DEFAULT_LIMIT)
     : 0
 

@@ -1,9 +1,8 @@
 import axios from 'axios'
-const BASE_URL = 'https://api.realworld.io/api'
-export const USER_KEY = 'user'
+import { BASE_API, USER_KEY } from '../../constants/api.constants'
 
 const api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_API,
 })
 
 api.defaults.headers.common['Content-Type'] = 'application/json'
