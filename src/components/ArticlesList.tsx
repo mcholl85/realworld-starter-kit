@@ -4,12 +4,13 @@ import ArticlePreview from './ArticlePreview'
 type ArticlesListProps = {
   articles?: IArticle[]
   articlesCount?: number
+  isError: boolean
   isLoading: boolean
-  isSuccess: boolean
 }
 
-function ArticlesList({ articles, articlesCount, isLoading }: ArticlesListProps) {
+function ArticlesList({ articles, articlesCount, isError, isLoading }: ArticlesListProps) {
   if (isLoading) return <div className='article-preview'>Loading articles...</div>
+  if (isError) return <div className='article-preview'>Something wrong append</div>
   if (articlesCount === 0)
     return <div className='article-preview'>No articles are here... yet.</div>
 

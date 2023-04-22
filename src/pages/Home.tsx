@@ -6,6 +6,7 @@ import { UserContext } from '../services/contexts/UserContextProvider'
 import useArticles from '../services/hooks/use-articles'
 import useTags from '../services/hooks/use-tags'
 import Pagination from '../components/Pagination'
+import ArticlesList from '../components/ArticlesList'
 
 function Home() {
   const { isLogged } = useContext(UserContext)
@@ -14,7 +15,9 @@ function Home() {
 
   const {
     articles,
+    articlesCount,
     isLoading: isArticleLoading,
+    isError: isArticleError,
     page,
     setPage,
     totalPage,
@@ -88,22 +91,13 @@ function Home() {
                 )}
               </ul>
             </div>
-            {isArticleLoading && <div className='article-preview'>Loading Articles...</div>}
-            {articles &&
-              articles.map((article) => (
-                <ArticlePreview
-                  key={article.slug}
-                  slug={article.slug}
-                  tagList={article.tagList}
-                  title={article.title}
-                  description={article.description}
-                  updateAt={article.updatedAt}
-                  favorited={article?.favorited}
-                  favoritesCount={article?.favoritesCount}
-                  author={article?.author}
-                />
-              ))}
-            {<Pagination totalPage={totalPage} currentPage={page} setPage={setPage} />}
+            <ArticlesList
+              articles={articles}
+              articlesCount={articlesCount}
+              isError={isArticleError}
+              isLoading={isArticleLoading}
+            />
+            <Pagination totalPage={totalPage} currentPage={page} setPage={setPage} />
           </div>
 
           <div className='col-md-3'>

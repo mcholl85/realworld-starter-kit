@@ -11,7 +11,7 @@ type ProfileProps = {
 
 function Profile({ isFavorite }: ProfileProps) {
   const { username } = useParams() as Record<'username', string>
-  const { articles, isLoading, isSuccess, articlesCount, totalPage, page, setPage } = useArticles({
+  const { articles, isLoading, isError, articlesCount, totalPage, page, setPage } = useArticles({
     favorited: isFavorite ? username : undefined,
     author: !isFavorite ? username : undefined,
   })
@@ -38,9 +38,9 @@ function Profile({ isFavorite }: ProfileProps) {
             </div>
             <ArticlesList
               articles={articles}
-              isSuccess={isSuccess}
               articlesCount={articlesCount}
               isLoading={isLoading}
+              isError={isError}
             />
             <Pagination totalPage={totalPage} currentPage={page} setPage={setPage} />
           </div>
