@@ -1,5 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { deleteComment, getComments, postComment } from '../api/articles'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { deleteComment, postComment } from '../api/articles'
 import { QUERY_COMMENTS_KEY } from '../../constants/query.constants'
 
 type UseCommentsProps = {
@@ -8,10 +8,6 @@ type UseCommentsProps = {
 
 function useComments({ slug }: UseCommentsProps) {
   const queryClient = useQueryClient()
-  const { data, isLoading } = useQuery({
-    queryKey: [QUERY_COMMENTS_KEY, slug],
-    queryFn: async () => await getComments(slug),
-  })
 
   const { mutate: addComment } = useMutation({
     mutationFn: postComment,
@@ -27,7 +23,7 @@ function useComments({ slug }: UseCommentsProps) {
     },
   })
 
-  return { comments: data, isLoading, addComment, removeComment }
+  return { addComment, removeComment }
 }
 
 export default useComments
