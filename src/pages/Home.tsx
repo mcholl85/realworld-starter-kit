@@ -1,10 +1,8 @@
 import classNames from 'classnames'
 import { useContext, useEffect, useState } from 'react'
-import ArticlePreview from '../components/ArticlePreview'
 import TagsList from '../components/TagsList'
 import { UserContext } from '../services/contexts/UserContextProvider'
 import useArticles from '../services/hooks/use-articles'
-import useTags from '../services/hooks/use-tags'
 import Pagination from '../components/Pagination'
 import ArticlesList from '../components/ArticlesList'
 
@@ -22,7 +20,6 @@ function Home() {
     setPage,
     totalPage,
   } = useArticles({ isFeed, tag: selectedTag })
-  const { tags, isLoading: isLoadingTags } = useTags()
 
   useEffect(() => {
     if (selectedTag) {
@@ -103,8 +100,7 @@ function Home() {
           <div className='col-md-3'>
             <div className='sidebar'>
               <p>Popular Tags</p>
-              {isLoadingTags && <div>Loading tags...</div>}
-              {tags && <TagsList tags={tags} setSelectedTags={setSelectedTag} />}
+              <TagsList setSelectedTags={setSelectedTag} />
             </div>
           </div>
         </div>

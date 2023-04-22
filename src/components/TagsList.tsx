@@ -1,9 +1,25 @@
+import { useQuery } from '@tanstack/react-query'
+import { QUERY_TAGS_KEY } from '../constants/query.constants'
+import { getTags } from '../services/api/tags'
+
 type TagsListProps = {
-  tags: string[]
   setSelectedTags: (selectedTag: string) => void
 }
 
-function TagsList({ tags, setSelectedTags }: TagsListProps) {
+function TagsList({ setSelectedTags }: TagsListProps) {
+  const {
+    data: tags,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: [QUERY_TAGS_KEY],
+    queryFn: async () => await getTags(),
+    retry: 0,
+  })
+
+  if (isLoading) return <div className='tag-list'>Loading...</div>
+  if (isError) return <div className='tag-list'>Something wrong append</div>
+
   return (
     <div className='tag-list'>
       {tags.map((tag) => (
