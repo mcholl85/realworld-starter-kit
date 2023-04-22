@@ -1,8 +1,8 @@
-import { Article } from '../services/hooks/use-article'
+import { IArticle } from '../interfaces'
 import ArticlePreview from './ArticlePreview'
 
 type ArticlesListProps = {
-  articles?: Article[]
+  articles?: IArticle[]
   articlesCount?: number
   isLoading: boolean
   isSuccess: boolean

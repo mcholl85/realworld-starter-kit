@@ -9,11 +9,12 @@ type UseArticlesProps = {
   isFeed?: boolean
   tag?: string
 }
+
 function useArticles({ favorited, author, isFeed, tag }: UseArticlesProps) {
   const [page, setPage] = useState(1)
   const offset = (page - 1) * DEFAULT_LIMIT
 
-  const articlesQuery = useQuery({
+  const { data, isLoading, isSuccess, isError } = useQuery({
     queryKey: ['articles', { feed: isFeed, tag, author, favorited, offset }],
     queryFn: async () =>
       await getArticles({
@@ -26,15 +27,14 @@ function useArticles({ favorited, author, isFeed, tag }: UseArticlesProps) {
     retry: 0,
   })
 
-  const totalPage = articlesQuery.data?.articlesCount
-    ? Math.ceil(articlesQuery.data.articlesCount / DEFAULT_LIMIT)
-    : 0
+  const totalPage = data?.articlesCount ? Math.ceil(data.articlesCount / DEFAULT_LIMIT) : page
 
   return {
-    articles: articlesQuery?.data?.articles,
-    isLoading: articlesQuery?.isLoading,
-    isSuccess: articlesQuery?.isSuccess,
-    articlesCount: articlesQuery?.data?.articlesCount,
+    articles: data?.articles,
+    isLoading,
+    isSuccess,
+    isError,
+    articlesCount: data?.articlesCount,
     page,
     setPage,
     totalPage,
