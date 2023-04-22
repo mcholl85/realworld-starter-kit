@@ -3,25 +3,19 @@ import ArticlePreview from './ArticlePreview'
 import { getArticles } from '../services/api/articles'
 import { DEFAULT_LIMIT } from '../constants/api.constants'
 import { useEffect } from 'react'
+import Pagination from './Pagination'
+import usePages from '../services/hooks/use-pages'
 
 type ArticlesListProps = {
   isFavorite?: boolean
   username?: string
   isFeed?: boolean
   tag?: string
-  page: number
-  setTotalPage: (page: number) => void
 }
 
-function ArticlesList({
-  isFavorite,
-  username,
-  isFeed,
-  tag,
-  page,
-  setTotalPage,
-}: ArticlesListProps) {
-  const offset = (page - 1) * DEFAULT_LIMIT
+function ArticlesList({ isFavorite, username, isFeed, tag }: ArticlesListProps) {
+  const { currentPage, setCurrentPage, total, setTotal } = usePages()
+  const offset = (currentPage - 1) * DEFAULT_LIMIT
   const { data, isLoading, isError } = useQuery({
     queryKey: ['articles', { feed: isFeed, tag, username, isFavorite, offset }],
     queryFn: async () =>
@@ -34,9 +28,9 @@ function ArticlesList({
       }),
     retry: 0,
   })
+
   useEffect(() => {
-    const totalPage = data?.articlesCount ? Math.ceil(data.articlesCount / DEFAULT_LIMIT) : page
-    setTotalPage(totalPage)
+    setTotal(data?.articlesCount)
   }, [data?.articlesCount])
 
   if (isLoading) return <div className='article-preview'>Loading articles...</div>
@@ -59,6 +53,7 @@ function ArticlesList({
           author={article?.author}
         />
       ))}
+      <Pagination totalPage={total} currentPage={currentPage} setPage={setCurrentPage} />
     </>
   )
 }

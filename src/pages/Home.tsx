@@ -2,20 +2,16 @@ import classNames from 'classnames'
 import { useContext, useEffect, useState } from 'react'
 import TagsList from '../components/TagsList'
 import { UserContext } from '../services/contexts/UserContextProvider'
-import Pagination from '../components/Pagination'
 import ArticlesList from '../components/ArticlesList'
 
 function Home() {
   const { isLogged } = useContext(UserContext)
   const [selectedTag, setSelectedTag] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPage, setTotalPage] = useState(currentPage)
   const [isFeed, setIsFeed] = useState(isLogged)
 
   useEffect(() => {
     if (selectedTag) {
       setIsFeed(false)
-      setCurrentPage(1)
     }
   }, [selectedTag])
 
@@ -41,7 +37,6 @@ function Home() {
                       onClick={(e) => {
                         e.preventDefault()
                         setIsFeed(true)
-                        setCurrentPage(1)
                         setSelectedTag('')
                       }}
                     >
@@ -57,7 +52,6 @@ function Home() {
                     onClick={(e) => {
                       e.preventDefault()
                       setIsFeed(false)
-                      setCurrentPage(1)
                       setSelectedTag('')
                     }}
                   >
@@ -79,13 +73,7 @@ function Home() {
                 )}
               </ul>
             </div>
-            <ArticlesList
-              isFeed={isFeed}
-              tag={selectedTag}
-              page={currentPage}
-              setTotalPage={setTotalPage}
-            />
-            <Pagination totalPage={totalPage} currentPage={currentPage} setPage={setCurrentPage} />
+            <ArticlesList isFeed={isFeed} tag={selectedTag} />
           </div>
 
           <div className='col-md-3'>

@@ -2,8 +2,6 @@ import classNames from 'classnames'
 import { NavLink, useParams } from 'react-router-dom'
 import ArticlesList from '../components/ArticlesList'
 import ProfileInfos from '../components/ProfileInfos'
-import Pagination from '../components/Pagination'
-import { useState } from 'react'
 
 type ProfileProps = {
   isFavorite: boolean
@@ -11,8 +9,6 @@ type ProfileProps = {
 
 function Profile({ isFavorite }: ProfileProps) {
   const { username } = useParams() as Record<'username', string>
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPage, setTotalPage] = useState(currentPage)
 
   return (
     <div className='profile-page'>
@@ -34,13 +30,7 @@ function Profile({ isFavorite }: ProfileProps) {
                 </li>
               </ul>
             </div>
-            <ArticlesList
-              isFavorite={isFavorite}
-              username={username}
-              page={currentPage}
-              setTotalPage={setTotalPage}
-            />
-            <Pagination totalPage={totalPage} currentPage={currentPage} setPage={setCurrentPage} />
+            <ArticlesList isFavorite={isFavorite} username={username} />
           </div>
         </div>
       </div>
