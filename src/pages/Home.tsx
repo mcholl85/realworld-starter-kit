@@ -2,29 +2,20 @@ import classNames from 'classnames'
 import { useContext, useEffect, useState } from 'react'
 import TagsList from '../components/TagsList'
 import { UserContext } from '../services/contexts/UserContextProvider'
-import useArticles from '../services/hooks/use-articles'
 import Pagination from '../components/Pagination'
 import ArticlesList from '../components/ArticlesList'
 
 function Home() {
   const { isLogged } = useContext(UserContext)
   const [selectedTag, setSelectedTag] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPage, setTotalPage] = useState(currentPage)
   const [isFeed, setIsFeed] = useState(isLogged)
-
-  const {
-    articles,
-    articlesCount,
-    isLoading: isArticleLoading,
-    isError: isArticleError,
-    page,
-    setPage,
-    totalPage,
-  } = useArticles({ isFeed, tag: selectedTag })
 
   useEffect(() => {
     if (selectedTag) {
       setIsFeed(false)
-      setPage(1)
+      setCurrentPage(1)
     }
   }, [selectedTag])
 
@@ -50,7 +41,7 @@ function Home() {
                       onClick={(e) => {
                         e.preventDefault()
                         setIsFeed(true)
-                        setPage(1)
+                        setCurrentPage(1)
                         setSelectedTag('')
                       }}
                     >
@@ -66,7 +57,7 @@ function Home() {
                     onClick={(e) => {
                       e.preventDefault()
                       setIsFeed(false)
-                      setPage(1)
+                      setCurrentPage(1)
                       setSelectedTag('')
                     }}
                   >
@@ -89,12 +80,12 @@ function Home() {
               </ul>
             </div>
             <ArticlesList
-              articles={articles}
-              articlesCount={articlesCount}
-              isError={isArticleError}
-              isLoading={isArticleLoading}
+              isFeed={isFeed}
+              tag={selectedTag}
+              page={currentPage}
+              setTotalPage={setTotalPage}
             />
-            <Pagination totalPage={totalPage} currentPage={page} setPage={setPage} />
+            <Pagination totalPage={totalPage} currentPage={currentPage} setPage={setCurrentPage} />
           </div>
 
           <div className='col-md-3'>

@@ -2,8 +2,8 @@ import { FormValues } from '../../../pages/EditArticle'
 
 export type getArticlesParams = {
   tag?: string
-  author?: string
-  favorited?: string
+  username?: string
+  isFavorite?: boolean
   limit?: number
   offset?: number
   feed?: boolean

@@ -14,14 +14,14 @@ export const getArticles = async ({
   offset = DEFAULT_OFFSET,
   feed,
   tag,
-  author,
-  favorited,
+  username,
+  isFavorite,
 }: getArticlesParams): Promise<IArticlesResponse> => {
   return await (
     await api.get(
       `/articles${feed ? '/feed' : ''}?${tag ? `tag=${tag}&` : ''}${
-        author ? `author=${author}&` : ''
-      }${favorited ? `favorited=${favorited}&` : ''}limit=${limit}&offset=${offset}`,
+        username && !isFavorite ? `author=${username}&` : ''
+      }${username && isFavorite ? `favorited=${username}&` : ''}limit=${limit}&offset=${offset}`,
     )
   ).data
 }
