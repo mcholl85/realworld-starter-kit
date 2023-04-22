@@ -1,19 +1,15 @@
 import classNames from 'classnames'
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import TagsList from '../components/TagsList'
 import { UserContext } from '../services/contexts/UserContextProvider'
 import ArticlesList from '../components/ArticlesList'
+import useNav from '../services/hooks/use-nav'
 
 function Home() {
   const { isLogged } = useContext(UserContext)
-  const [selectedTag, setSelectedTag] = useState('')
-  const [isFeed, setIsFeed] = useState(isLogged)
-
-  useEffect(() => {
-    if (selectedTag) {
-      setIsFeed(false)
-    }
-  }, [selectedTag])
+  const { isGlobal, setIsGlobal, isFeed, setIsFeed, selectedTag, setSelectedTag } = useNav({
+    isLogged,
+  })
 
   return (
     <div className='home-page'>
@@ -37,7 +33,7 @@ function Home() {
                       onClick={(e) => {
                         e.preventDefault()
                         setIsFeed(true)
-                        setSelectedTag('')
+                        setIsGlobal(false)
                       }}
                     >
                       Your Feed
@@ -48,11 +44,11 @@ function Home() {
                 <li className='nav-item'>
                   <a
                     href=''
-                    className={classNames('nav-link', { active: !isFeed && !selectedTag })}
+                    className={classNames('nav-link', { active: isGlobal })}
                     onClick={(e) => {
                       e.preventDefault()
+                      setIsGlobal(true)
                       setIsFeed(false)
-                      setSelectedTag('')
                     }}
                   >
                     Global Feed
@@ -63,9 +59,7 @@ function Home() {
                     <a
                       href=''
                       className={classNames('nav-link', { active: selectedTag })}
-                      onClick={(e) => {
-                        e.preventDefault()
-                      }}
+                      onClick={(e) => e.preventDefault()}
                     >
                       # {selectedTag}
                     </a>
