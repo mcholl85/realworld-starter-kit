@@ -71,11 +71,11 @@ const router = createBrowserRouter([
         element: <Article />,
       },
       {
-        path: '/:username/',
+        path: '/user/:username/',
         element: <Profile isFavorite={false} />,
       },
       {
-        path: '/:username/favorites',
+        path: '/user/:username/favorites',
         element: <Profile isFavorite={true} />,
       },
     ],

@@ -39,7 +39,7 @@ function ArticlePreview({
           <img src={author.image} />
         </Link>
         <div className='info'>
-          <Link to={`/${author.username}/`} className='author'>
+          <Link to={`/user/${author.username}/`} className='author'>
             {author.username}
           </Link>
           <span className='date'>{format(new Date(updateAt), 'MMMM d, yyyy')}</span>

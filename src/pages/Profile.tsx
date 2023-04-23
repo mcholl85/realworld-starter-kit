@@ -19,12 +19,12 @@ function Profile({ isFavorite }: ProfileProps) {
             <div className='articles-toggle'>
               <ul className='nav nav-pills outline-active'>
                 <li className='nav-item'>
-                  <NavLink className={classNames('nav-link')} to={`/${username}/`}>
+                  <NavLink className={classNames('nav-link')} to={`/user/${username}/`}>
                     My Articles
                   </NavLink>
                 </li>
                 <li className='nav-item'>
-                  <NavLink className={classNames('nav-link')} to={`/${username}/favorites`}>
+                  <NavLink className={classNames('nav-link')} to={`/user/${username}/favorites`}>
                     Favorited Articles
                   </NavLink>
                 </li>

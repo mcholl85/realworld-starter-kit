@@ -34,7 +34,7 @@ function Header() {
                 </NavLink>
               </li>
               <li className='nav-item'>
-                <NavLink className='nav-link' to={`/${username}/`}>
+                <NavLink className='nav-link' to={`/user/${username}/`}>
                   <img src={image} className='user-pic' />
                   {username}
                 </NavLink>
