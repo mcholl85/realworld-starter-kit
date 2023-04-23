@@ -1,6 +1,7 @@
-import { KeyboardEvent, useState } from 'react'
+import { KeyboardEvent, useEffect, useState } from 'react'
 import { UseFormSetValue } from 'react-hook-form'
 import { FormValues } from '../pages/EditArticle'
+import useTags from '../services/hooks/use-tags'
 
 type TagsInputProps = {
   setTagsForm: UseFormSetValue<FormValues>
@@ -8,29 +9,22 @@ type TagsInputProps = {
 }
 
 function TagsInput({ tagsList, setTagsForm }: TagsInputProps) {
+  const { tags, addTag, removeTag } = useTags({ tagsList })
   const [input, setInput] = useState<string>('')
-  const [tags, setTags] = useState<Array<string>>(tagsList || [])
 
   const handleKeyEnter = (e: KeyboardEvent<HTMLInputElement>) => {
+    const value = (e.target as HTMLInputElement).value.trim()
+
     if (e.key === 'Enter') {
       e.preventDefault()
-      const value = (e.target as HTMLInputElement).value.trim()
-
-      if (value && !tags.includes(value)) {
-        const newTagsList = [value, ...tags]
-
-        setTags(newTagsList)
-        setInput('')
-        setTagsForm('tagList', newTagsList)
-      }
+      if (value) addTag(value)
+      setInput('')
     }
   }
-  const removeTag = (currentTag: string) => {
-    const newTagsList = tags.filter((tag) => tag !== currentTag)
 
-    setTags(newTagsList)
-    setTagsForm('tagList', newTagsList)
-  }
+  useEffect(() => {
+    setTagsForm('tagList', tags)
+  }, [tags])
 
   return (
     <fieldset className='form-group'>
