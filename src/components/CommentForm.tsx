@@ -12,29 +12,37 @@ function CommentForm({ slug }: CommentFormProps) {
     user: { image },
   } = useContext(UserContext)
   const { register, handleSubmit, reset } = useForm<Record<'body', string>>()
-  const { addComment } = useComments({ slug })
+  const { addComment, addCommentIsError, errors } = useComments({ slug })
 
   return (
-    <form
-      className='card comment-form'
-      onSubmit={handleSubmit((data) => {
-        addComment({ form: data, slug })
-        reset()
-      })}
-    >
-      <div className='card-block'>
-        <textarea
-          className='form-control'
-          placeholder='Write a comment...'
-          rows={3}
-          {...register('body')}
-        ></textarea>
-      </div>
-      <div className='card-footer'>
-        <img src={image} className='comment-author-img' />
-        <button className='btn btn-sm btn-primary'>Post Comment</button>
-      </div>
-    </form>
+    <>
+      {addCommentIsError &&
+        errors.map((error) => (
+          <ul key={error} className='error-messages'>
+            <li>{error}</li>
+          </ul>
+        ))}
+      <form
+        className='card comment-form'
+        onSubmit={handleSubmit((data) => {
+          addComment({ form: data, slug })
+          reset()
+        })}
+      >
+        <div className='card-block'>
+          <textarea
+            className='form-control'
+            placeholder='Write a comment...'
+            rows={3}
+            {...register('body')}
+          ></textarea>
+        </div>
+        <div className='card-footer'>
+          <img src={image} className='comment-author-img' />
+          <button className='btn btn-sm btn-primary'>Post Comment</button>
+        </div>
+      </form>
+    </>
   )
 }
 
