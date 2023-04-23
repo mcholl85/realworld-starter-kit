@@ -14,6 +14,11 @@ function CommentForm({ slug }: CommentFormProps) {
   const { register, handleSubmit, reset } = useForm<Record<'body', string>>()
   const { addComment, addCommentIsError, errors } = useComments({ slug })
 
+  const onSubmit = handleSubmit((data) => {
+    addComment({ form: data, slug })
+    reset()
+  })
+
   return (
     <>
       {addCommentIsError &&
@@ -22,13 +27,7 @@ function CommentForm({ slug }: CommentFormProps) {
             <li>{error}</li>
           </ul>
         ))}
-      <form
-        className='card comment-form'
-        onSubmit={handleSubmit((data) => {
-          addComment({ form: data, slug })
-          reset()
-        })}
-      >
+      <form className='card comment-form' onSubmit={onSubmit}>
         <div className='card-block'>
           <textarea
             className='form-control'

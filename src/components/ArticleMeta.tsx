@@ -33,11 +33,11 @@ function ArticleMeta({
 
   return (
     <div className='article-meta'>
-      <Link to={`/${username}`}>
+      <Link to={`/user/${username}`}>
         <img src={image} />
       </Link>
       <div className='info'>
-        <Link to={`/${username}`} className='author'>
+        <Link to={`/user/${username}`} className='author'>
           {username}
         </Link>
         <span className='date'>{format(new Date(updateAt), 'MMMM d, yyyy')}</span>
