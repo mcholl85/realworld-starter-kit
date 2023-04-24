@@ -7,7 +7,7 @@ type ArticlePreviewProps = {
   slug: string
   title: string
   description: string
-  updateAt: Date
+  updateAt: string
   favorited: boolean
   favoritesCount: number
   tagList: string[]

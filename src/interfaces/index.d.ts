@@ -3,7 +3,7 @@ export interface IArticle {
   title: string
   description: string
   body: string
-  updatedAt: Date
+  updatedAt: string
   favorited: boolean
   favoritesCount: number
   tagList: Array<string>
@@ -17,8 +17,8 @@ export interface IArticle {
 
 export interface IComment {
   id: number
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
   body: string
   author: {
     username: string
