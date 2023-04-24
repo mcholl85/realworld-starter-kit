@@ -1,5 +1,4 @@
 import { createContext, PropsWithChildren, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { parseErrors } from '../../utils/parseErrors'
 import { postLogin, postRegister, putUser } from '../api/users'
 import useLocalStorage from '../hooks/use-localstorage'
@@ -28,7 +27,6 @@ const initialUser: IUser = {
 const UserContext = createContext({} as UserContextProps)
 
 const UserContextProvider = ({ children }: PropsWithChildren) => {
-  const navigate = useNavigate()
   const [errors, setErrors] = useState<string[]>([])
   const [user, setUser] = useLocalStorage<IUser>(USER_KEY, initialUser)
 
@@ -40,7 +38,6 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
     if (user) {
       setUser(user)
       setErrors([])
-      navigate('/')
     }
 
     if (errors) setErrors(parseErrors(errors))
@@ -52,7 +49,6 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
     if (user) {
       setUser(user)
       setErrors([])
-      navigate('/')
     }
 
     if (errors) setErrors(parseErrors(errors))
@@ -63,7 +59,6 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
 
     if (user) {
       setUser(user)
-      navigate(`/${user.username}/`)
     }
   }
 
