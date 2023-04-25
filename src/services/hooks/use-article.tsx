@@ -20,7 +20,7 @@ function useArticle({ fetched, slug }: UseArticleProps) {
     title: '',
     description: '',
     body: '',
-    updatedAt: new Date(),
+    updatedAt: '',
     favorited: false,
     favoritesCount: 0,
     tagList: [] as Array<string>,

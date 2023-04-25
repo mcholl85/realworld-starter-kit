@@ -12,7 +12,7 @@ type ArticleMetaProps = {
   image: string
   following: boolean
   favorited: boolean
-  updateAt: Date
+  updateAt: string
   slug: string
   favoritesCount: number
 }
