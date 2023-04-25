@@ -1,25 +1,14 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { parseErrors } from '../../utils/parseErrors'
 import { postLogin, postRegister, putUser } from '../api/users'
-import { IUser } from '../../interfaces'
-import useLocalStorage from './use-localstorage'
 import { LoginParams, RegisterParams, UpdateParams } from '../api/users/index.types'
-import { USER_KEY } from '../../constants/api.constants'
+import { UserContext } from '../contexts/UserContextProvider'
 
 function useAuth() {
-  const initialUser: IUser = {
-    email: '',
-    token: '',
-    username: '',
-    bio: '',
-    image: '',
-  }
-  const [user, setUser] = useLocalStorage<IUser>(USER_KEY, initialUser)
+  const { user, setUser, resetUser, isLogged } = useContext(UserContext)
   const [errors, setErrors] = useState<string[]>([])
   const navigate = useNavigate()
-
-  const isLogged = user.token !== ''
 
   const setLogin = async (params: LoginParams) => {
     const { errors, user } = await postLogin(params)
@@ -48,13 +37,12 @@ function useAuth() {
 
     if (user) {
       setUser(user)
-      navigate(`/${user.username}`)
+      navigate(`/user/${user.username}`)
     }
   }
 
   const setLogout = () => {
-    setUser(initialUser)
-    navigate('/')
+    resetUser()
   }
 
   return { user, errors, isLogged, setLogin, setRegister, updateUser, setLogout }

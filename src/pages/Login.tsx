@@ -1,12 +1,11 @@
-import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { UserContext } from '../services/contexts/UserContextProvider'
+import useAuth from '../services/hooks/use-auth'
 
 type FormValues = { email: string; password: string }
 
 function Login() {
-  const { setLogin, errors } = useContext(UserContext)
+  const { setLogin, errors } = useAuth()
   const { register, handleSubmit } = useForm<FormValues>()
   const onSubmit = handleSubmit(async (data) => setLogin(data))
 

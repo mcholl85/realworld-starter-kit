@@ -1,75 +1,31 @@
-import { createContext, PropsWithChildren, useState } from 'react'
-import { parseErrors } from '../../utils/parseErrors'
-import { postLogin, postRegister, putUser } from '../api/users'
+import { createContext, PropsWithChildren } from 'react'
 import useLocalStorage from '../hooks/use-localstorage'
 import { IUser } from '../../interfaces'
-import { LoginParams, RegisterParams, UpdateParams } from '../api/users/index.types'
 import { USER_KEY } from '../../constants/api.constants'
 
 type UserContextProps = {
   user: IUser
-  errors: string[]
   isLogged: boolean
-  setLogin: (params: LoginParams) => Promise<void>
-  setRegister: (params: RegisterParams) => Promise<void>
-  updateUser: (params: UpdateParams) => Promise<void>
-  setLogout: () => void
-}
-
-const initialUser: IUser = {
-  email: '',
-  token: '',
-  username: '',
-  bio: '',
-  image: '',
+  setUser: (user: IUser) => void
+  resetUser: () => void
 }
 
 const UserContext = createContext({} as UserContextProps)
 
 const UserContextProvider = ({ children }: PropsWithChildren) => {
-  const [errors, setErrors] = useState<string[]>([])
+  const initialUser: IUser = {
+    email: '',
+    token: '',
+    username: '',
+    bio: '',
+    image: '',
+  }
   const [user, setUser] = useLocalStorage<IUser>(USER_KEY, initialUser)
-
   const isLogged = user.token !== ''
-
-  const setLogin = async (params: LoginParams) => {
-    const { errors, user } = await postLogin(params)
-
-    if (user) {
-      setUser(user)
-      setErrors([])
-    }
-
-    if (errors) setErrors(parseErrors(errors))
-  }
-
-  const setRegister = async (params: RegisterParams) => {
-    const { errors, user } = await postRegister(params)
-
-    if (user) {
-      setUser(user)
-      setErrors([])
-    }
-
-    if (errors) setErrors(parseErrors(errors))
-  }
-
-  const updateUser = async (params: UpdateParams) => {
-    const { user } = await putUser(params)
-
-    if (user) {
-      setUser(user)
-    }
-  }
-
-  const setLogout = () => {
-    setUser(initialUser)
-  }
+  const resetUser = () => setUser(initialUser)
 
   return (
-    <UserContext.Provider
-      value={{ user, errors, isLogged, setLogin, setRegister, updateUser, setLogout }}
-    >
+    <UserContext.Provider value={{ user, setUser, isLogged, resetUser }}>
       {children}
     </UserContext.Provider>
   )

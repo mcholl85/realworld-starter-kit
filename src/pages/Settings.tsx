@@ -1,6 +1,5 @@
-import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { UserContext } from '../services/contexts/UserContextProvider'
+import useAuth from '../services/hooks/use-auth'
 
 type FormValues = {
   username: string
@@ -16,7 +15,7 @@ function Settings() {
     user: { username, bio, image, email },
     updateUser,
     setLogout,
-  } = useContext(UserContext)
+  } = useAuth()
 
   const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: { username: username, bio: bio, image: image, email: email, password: '' },
